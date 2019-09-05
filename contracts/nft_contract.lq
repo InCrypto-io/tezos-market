@@ -1,0 +1,75 @@
+type account = {
+  balance: nat;
+  tokens: nat set;
+  allowances: (address, int) map }
+type storage =
+  {
+    accounts : (address, account) big_map;
+    version: nat ;
+    totalSupply: nat ;
+    name: string ;
+    symbol: string ;
+    owner: address }
+let%init storage owner name symbol =
+  let owner_account  =
+    { balance = 0p;
+      tokens = Set;
+      allowances = Map } in
+  let accounts =
+    Map.add owner owner_account BigMap in
+  {
+    accounts;
+    version = 1p;
+    totalSupply = 0p;
+    name;
+    symbol;
+    owner;
+  }
+let get_account (a, (accounts : (address, account) big_map)) =
+  match Map.find a accounts with
+  | None -> { balance = 0p; tokens = Set; allowances = Map }
+  | Some account -> account
+let perform_transfer
+    (from, dest, token_id, storage) =
+  let accounts = storage.accounts in
+  let account_sender = get_account (from, accounts) in
+  if not (Set.mem token_id account_sender.tokens) then
+    failwith ("There is no such token which You want to transfer", account_sender.tokens);
+  let new_balance_sender = match is_nat (account_sender.balance - 1) with
+    | None ->
+        failwith ("Not enough tokens for transfer", account_sender.balance)
+    | Some b -> account_sender.balance <- b in
+  let account_sender =
+    {balance = new_balance_sender.balance;
+     tokens = Set.remove token_id account_sender.tokens;
+     allowances = account_sender.allowances;} in
+  let accounts = Map.add from account_sender accounts in
+  let account_dest = get_account (dest, accounts) in
+  let new_account_dest =
+    account_dest.balance <- account_dest.balance + 1p in
+  let new_account_dest =
+    {balance = new_account_dest.balance;
+     tokens = Set.add token_id new_account_dest.tokens;
+     allowances = new_account_dest.allowances;} in
+  let accounts = Map.add dest new_account_dest accounts in
+  [], storage.accounts <- accounts
+let%entry transfer (dest, token_id) storage =
+  perform_transfer (Current.sender (), dest, token_id, storage)
+
+let create_token
+    (dest, storage) =
+  let accounts = storage.accounts in
+  let account_sender = get_account (dest, accounts) in
+  let new_token_id = storage.totalSupply + 1p in
+  let account_with_new_token =
+    {balance = account_sender.balance + 1p;
+     tokens = Set.add new_token_id account_sender.tokens;
+     allowances = account_sender.allowances;} in
+  let storage = storage.totalSupply <- storage.totalSupply + 1p in
+  let accounts = Map.add dest account_with_new_token accounts in
+  [], storage.accounts <- accounts
+
+let%entry mint (dest: address) storage =
+  if Current.sender () <> storage.owner then
+    failwith "Only owner can mint tokens";
+  create_token(dest, storage)
