@@ -88,5 +88,19 @@ let%entry approve (spender, token_id) storage =
       Map.add spender new_tokens_allowance account_sender.allowances in
   let storage = storage.accounts <-
       Map.add (Current.sender ()) account_sender storage.accounts in
-  [], storage 
+  [], storage
   
+let%entry transferFrom (from, dest, token_id) storage = 
+  let account_from = get_account (from, storage.accounts) in
+  let new_allowances_from = 
+    match Map.find (Current.sender ()) account_from.allowances with
+    | None -> failwith ("Not allowed to spend from", from)
+    | Some allowed ->
+        if not (Set.mem token_id allowed) then
+          failwith ("Not allowed to spend this token");
+        Set.remove token_id allowed in
+  let account_from_map = Map.add (Current.sender ()) new_allowances_from account_from.allowances in
+  let account_from = account_from.allowances <- account_from_map in
+  let storage = storage.accounts <-
+      Map.add from account_from storage.accounts in
+  perform_transfer (from, dest, token_id, storage)
