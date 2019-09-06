@@ -9,7 +9,8 @@ export default class WalletTest extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            accounts: ""
+            accounts: "",
+            value: "text for field in contract"
         }
     }
 
@@ -49,12 +50,13 @@ export default class WalletTest extends React.Component {
 
         tbapi.initiateTransaction(
             source,
-            "KT1CdWUuiPAop9hsdBydYM4dAagZCdoEjmAg",
-            1,
-            10000,
-            '{"string": "Cryptonomicon"}',
-            1000,
-            100000).then(function (r) {
+            "KT1EiSyVzA56AvSVmA47941uFixjE94ZRsvy",
+            0.00001,
+            1000000,
+            `("${this.state.value}" string)`,
+            800000,
+            60000
+        ).then(function (r) {
             console.log("rrrrrrr", r);
             if (r == false) {
                 console.error(r.error);
@@ -90,7 +92,6 @@ export default class WalletTest extends React.Component {
             if (r == false) {
                 console.error(r.error);
             } else {
-                console.log("r.data", r.data);
                 inst.setState({
                     accounts: r.data
                 });
@@ -98,6 +99,11 @@ export default class WalletTest extends React.Component {
             }
         }).catch(console.error);
     };
+
+    handleChange = (event) => {
+        this.setState({value: event.target.value});
+    };
+
 
     render() {
         return <div>
@@ -115,7 +121,8 @@ export default class WalletTest extends React.Component {
 
             <p>
                 <span>Accounts:</span>
-                {this.state.accounts ? this.state.accounts.map((a) => (<p key={a.address}><span>{a.address}</span></p>)) : "none"}
+                {this.state.accounts ? this.state.accounts.map((a) => (
+                    <p key={a.address}><span>{a.address}</span></p>)) : "none"}
             </p>
             <p>
 
@@ -132,6 +139,7 @@ export default class WalletTest extends React.Component {
             </p>
 
             <p>
+                <input type="text" value={this.state.value} onChange={this.handleChange} />
 
                 <button onClick={this.handleInvokeTx}>
                     Invoke tx
