@@ -10,7 +10,7 @@ export default class WalletTest extends React.Component {
         super(props);
         this.state = {
             accounts: "",
-            text: "text for field in contract",
+            text: "text",
             number: 55
         }
     }
@@ -51,10 +51,10 @@ export default class WalletTest extends React.Component {
 
         tbapi.initiateTransaction(
             source,
-            "KT1CmiFM7fCZNCJ7ideTxxPCxfiKvbMmAocc",
+            "KT1AT6oyJBjEVFZ3A8oYMD1WYGeekKgHn8wi",
             0.00001,
             1000000,
-            `set_value("${this.state.text}" string, "${this.state.number}" int)`,
+            `(Left "${this.state.text}")`,
             800000,
             60000
         ).then(function (r) {
@@ -74,10 +74,33 @@ export default class WalletTest extends React.Component {
 
         tbapi.initiateTransaction(
             source,
-            "KT1CmiFM7fCZNCJ7ideTxxPCxfiKvbMmAocc",
+            "KT1AT6oyJBjEVFZ3A8oYMD1WYGeekKgHn8wi",
             0.00001,
             1000000,
-            `set_values("${this.state.text}" string)`,
+            `(Right (Left (Pair "${this.state.text}" ${this.state.number})))`,
+            800000,
+            60000
+        ).then(function (r) {
+            console.log("rrrrrrr", r);
+            if (r == false) {
+                console.error(r.error);
+            } else {
+                console.log("Transaction was set!", r.data);
+            }
+        }).catch(console.error);
+    };
+
+    handleInvokeTxMultpSetTextAndNumber = async () => {
+        // const tezosNode = "http://alphanet-node.tzscan.io";
+        // const source = {url: tezosNode, apiKey: ''};
+        const source = this.state.accounts[0].address;
+
+        tbapi.initiateTransaction(
+            source,
+            "KT1AT6oyJBjEVFZ3A8oYMD1WYGeekKgHn8wi",
+            0.00001,
+            1000000,
+            `(Right (Right (Pair "${this.state.text}" ${this.state.number})))`,
             800000,
             60000
         ).then(function (r) {
@@ -126,7 +149,7 @@ export default class WalletTest extends React.Component {
 
     handleChange = (event) => {
         let target = event.target;
-        let value = target.type === 'checkbox' ? target.checked : target.text;
+        let value = target.value;
         let name = target.name;
         this.setState({
             [name]: value
@@ -187,6 +210,12 @@ export default class WalletTest extends React.Component {
                 <p>
                     <button onClick={this.handleInvokeTxSetTextAndNumber}>
                         Update text and number tx
+                    </button>
+                </p>
+
+                <p>
+                    <button onClick={this.handleInvokeTxMultpSetTextAndNumber}>
+                        Update text and 2 * number tx
                     </button>
                 </p>
             </p>

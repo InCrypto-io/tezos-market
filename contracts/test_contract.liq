@@ -14,7 +14,14 @@ let%entry set_value (choice : string) storage =
   ( [], storage )
 
 let%entry set_values ((choice : string), (num: int)) storage =
-  let storage = 
+  let storage =
     {text = choice;
      num = num;} in
+  ( [], storage )
+
+
+let%entry multp_set_values ((choice : string), (num: int)) storage =
+  let storage =
+    {text = choice;
+     num = num * 2;} in
   ( [], storage )

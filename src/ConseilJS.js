@@ -112,14 +112,44 @@ export default class ConseilJS extends React.Component {
         // const entryPoints = await conseiljs.TezosContractIntrospector.generateEntryPointsFromParams(contractParameters);
         // const entryPoints = await conseiljs.TezosContractIntrospector.generateEntryPointsFromAddress(conseilServerInfo,"main","KT1E16WjiQQNbygDhcy9mXMrce7qvxj9K9rR");
         const entryPoints = await conseiljs.TezosContractIntrospector.generateEntryPointsFromCode(`
-        parameter string;
-        storage string;
-        code { DUP ;
-               DIP { CDR @v_slash_1 } ;
-               DIP { DROP } ;
-               CAR @choice_slash_2 ;
+parameter
+  (or :_entries
+     (string %set_value)
+     (or (pair %set_values string int) (pair %multp_set_values string int)));
+storage (pair :storage (string %text) (int %num));
+code { DUP ;
+       DIP { CDR @storage_slash_1 } ;
+       CAR @parameter_slash_2 ;
+       DUP @parameter ;
+       IF_LEFT
+         { RENAME @choice_slash_3 ;
+           DUUUP @storage ;
+           CDR %num ;
+           SWAP ;
+           PAIR @storage %text %num ;
+           NIL operation ;
+           PAIR }
+         { IF_LEFT
+             { RENAME @_choice_num_slash_6 ;
+               DUP ;
+               CDR @num ;
+               SWAP ;
+               CAR @choice ;
+               PAIR @storage %text %num ;
                NIL operation ;
-               PAIR };
+               PAIR }
+             { RENAME @_choice_num_slash_11 ;
+               PUSH int 2 ;
+               DUUP ;
+               CDR @num ;
+               MUL ;
+               SWAP ;
+               CAR @choice ;
+               PAIR @storage %text %num ;
+               NIL operation ;
+               PAIR } } ;
+       DIP { DROP ; DROP } };
+
         `);
 
 
