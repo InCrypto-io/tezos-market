@@ -158,7 +158,10 @@ code { DUP ;
         });
 
         console.log("entryPoints", entryPoints);
-        console.log(entryPoints[0].generateParameter('test ok'));
+
+        console.log(entryPoints[0].generateParameter(`"${'00000 test ok'}"`));
+        console.log(entryPoints[1].generateParameter(`"${'1111  test ok'}"`, 73));
+        console.log(entryPoints[2].generateParameter(`"${'222222  test ok'}"`, 73));
     };
 
     render() {
