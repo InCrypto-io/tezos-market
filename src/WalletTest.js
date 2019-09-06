@@ -1,9 +1,5 @@
 import * as React from "react";
 
-require('tbapi/tbapi');
-const tbapi = window.tbapi;
-
-
 export default class WalletTest extends React.Component {
 
     constructor(props) {
@@ -17,7 +13,7 @@ export default class WalletTest extends React.Component {
 
     componentDidMount() {
 
-        tbapi.getAllAccounts().then(function (r) {
+        window.tbapi.getAllAccounts().then(function (r) {
             console.log("getAllAccounts", r);
             if (r == false) {
                 console.error(r.error);
@@ -30,7 +26,7 @@ export default class WalletTest extends React.Component {
     handleTx = async () => {
         const source = this.state.accounts[0].address;
 
-        tbapi.initiateTransaction(
+        window.tbapi.initiateTransaction(
             source,
             "KT1MoVC2LEKCT4T7Q2Q9ZU6wZAigukf6icBH",
             5,
@@ -49,7 +45,7 @@ export default class WalletTest extends React.Component {
         // const source = {url: tezosNode, apiKey: ''};
         const source = this.state.accounts[0].address;
 
-        tbapi.initiateTransaction(
+        window.tbapi.initiateTransaction(
             source,
             "KT1AT6oyJBjEVFZ3A8oYMD1WYGeekKgHn8wi",
             0.00001,
@@ -72,7 +68,7 @@ export default class WalletTest extends React.Component {
         // const source = {url: tezosNode, apiKey: ''};
         const source = this.state.accounts[0].address;
 
-        tbapi.initiateTransaction(
+        window.tbapi.initiateTransaction(
             source,
             "KT1AT6oyJBjEVFZ3A8oYMD1WYGeekKgHn8wi",
             0.00001,
@@ -95,7 +91,7 @@ export default class WalletTest extends React.Component {
         // const source = {url: tezosNode, apiKey: ''};
         const source = this.state.accounts[0].address;
 
-        tbapi.initiateTransaction(
+        window.tbapi.initiateTransaction(
             source,
             "KT1AT6oyJBjEVFZ3A8oYMD1WYGeekKgHn8wi",
             0.00001,
@@ -114,7 +110,7 @@ export default class WalletTest extends React.Component {
     };
 
     checkAccess = async () => {
-        tbapi.haveAccess().then(function (r) {
+        window.tbapi.haveAccess().then(function (r) {
             if (r == false) {
                 console.log("We don't have access");
             } else {
@@ -124,7 +120,7 @@ export default class WalletTest extends React.Component {
     };
 
     requestAccess = async () => {
-        tbapi.requestAccess().then(function (r) {
+        window.tbapi.requestAccess().then(function (r) {
             if (r == false) {
                 console.log("Access rejected or blocked");
             } else {
@@ -135,7 +131,7 @@ export default class WalletTest extends React.Component {
 
     getAllAccounts = async () => {
         const inst = this;
-        await tbapi.getAllAccounts().then(function (r) {
+        await window.tbapi.getAllAccounts().then(function (r) {
             if (r == false) {
                 console.error(r.error);
             } else {
@@ -158,7 +154,7 @@ export default class WalletTest extends React.Component {
 
     render() {
         return <div style={{background: "#030"}}>
-            <span>++++++++tbapi++++++++++++++++</span>
+            <span>++++++++window.tbapi++++++++++++++++</span>
             <p>
                 <button onClick={this.requestAccess}>
                     requestAccess

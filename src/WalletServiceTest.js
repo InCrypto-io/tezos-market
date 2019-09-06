@@ -45,17 +45,15 @@ export default class WalletServiceTest extends React.Component {
 
     constructor(props) {
         super(props);
-        const wallet = new Wallet();
-        wallet.init("KT1AT6oyJBjEVFZ3A8oYMD1WYGeekKgHn8wi",
-            contract)
-            .catch(console.error);
-        this.state = {
-            wallet
-        }
+        this.state = {}
     }
 
     handleTx = async () => {
-        this.state.wallet.invoke("multp_set_values",
+        const wallet = new Wallet();
+        await wallet.init("KT1AT6oyJBjEVFZ3A8oYMD1WYGeekKgHn8wi",
+            contract)
+            .catch(console.error);
+        wallet.invoke("multp_set_values",
             {},
             "wallet service",
             753
