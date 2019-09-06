@@ -3,6 +3,9 @@ import {forEach} from "lodash";
 
 const conseiljs = require('conseiljs');
 
+require('tbapi/tbapi');
+const tbapi = window.tbapi;
+
 export default class Wallet {
     accounts = [];
     contract = "";
@@ -23,14 +26,14 @@ export default class Wallet {
     };
 
     checkAccess = async () => {
-        return await window.tbapi.haveAccess()
+        return await tbapi.haveAccess()
             .then(function (r) {
                 return r === true;
             }).catch(() => (false));
     };
 
     requestAccess = async () => {
-        return await window.tbapi.requestAccess()
+        return await tbapi.requestAccess()
             .then(function (r) {
                 return r === true;
             }).catch(() => (false));
