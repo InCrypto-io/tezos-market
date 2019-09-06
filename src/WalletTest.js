@@ -10,7 +10,8 @@ export default class WalletTest extends React.Component {
         super(props);
         this.state = {
             accounts: "",
-            value: "text for field in contract"
+            text: "text for field in contract",
+            number: 55
         }
     }
 
@@ -43,17 +44,40 @@ export default class WalletTest extends React.Component {
         }).catch(console.error);
     };
 
-    handleInvokeTx = async () => {
+    handleInvokeTxSetText = async () => {
         // const tezosNode = "http://alphanet-node.tzscan.io";
         // const source = {url: tezosNode, apiKey: ''};
         const source = this.state.accounts[0].address;
 
         tbapi.initiateTransaction(
             source,
-            "KT1EiSyVzA56AvSVmA47941uFixjE94ZRsvy",
+            "KT1CmiFM7fCZNCJ7ideTxxPCxfiKvbMmAocc",
             0.00001,
             1000000,
-            `("${this.state.value}" string)`,
+            `set_value("${this.state.text}" string, "${this.state.number}" int)`,
+            800000,
+            60000
+        ).then(function (r) {
+            console.log("rrrrrrr", r);
+            if (r == false) {
+                console.error(r.error);
+            } else {
+                console.log("Transaction was set!", r.data);
+            }
+        }).catch(console.error);
+    };
+
+    handleInvokeTxSetTextAndNumber = async () => {
+        // const tezosNode = "http://alphanet-node.tzscan.io";
+        // const source = {url: tezosNode, apiKey: ''};
+        const source = this.state.accounts[0].address;
+
+        tbapi.initiateTransaction(
+            source,
+            "KT1CmiFM7fCZNCJ7ideTxxPCxfiKvbMmAocc",
+            0.00001,
+            1000000,
+            `set_values("${this.state.text}" string)`,
             800000,
             60000
         ).then(function (r) {
@@ -101,12 +125,16 @@ export default class WalletTest extends React.Component {
     };
 
     handleChange = (event) => {
-        this.setState({value: event.target.value});
+        let target = event.target;
+        let value = target.type === 'checkbox' ? target.checked : target.text;
+        let name = target.name;
+        this.setState({
+            [name]: value
+        });
     };
 
-
     render() {
-        return <div>
+        return <div style={{background: "#030"}}>
             <span>++++++++tbapi++++++++++++++++</span>
             <p>
                 <button onClick={this.requestAccess}>
@@ -139,11 +167,28 @@ export default class WalletTest extends React.Component {
             </p>
 
             <p>
-                <input type="text" value={this.state.value} onChange={this.handleChange} />
+                <p>
+                    <p>
+                        <span>text to contract </span>
+                        <input type="text" value={this.state.text} name={"text"} onChange={this.handleChange} />
+                    </p>
+                    <p>
+                        <span>number to contract </span>
+                        <input type="number" value={this.state.number} name={"number"} onChange={this.handleChange} />
+                    </p>
+                </p>
 
-                <button onClick={this.handleInvokeTx}>
-                    Invoke tx
-                </button>
+                <p>
+                    <button onClick={this.handleInvokeTxSetText}>
+                        Update only text tx
+                    </button>
+                </p>
+
+                <p>
+                    <button onClick={this.handleInvokeTxSetTextAndNumber}>
+                        Update text and number tx
+                    </button>
+                </p>
             </p>
 
             <span>-------------------------------</span>
