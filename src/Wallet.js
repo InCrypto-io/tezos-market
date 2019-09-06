@@ -59,7 +59,7 @@ export default class Wallet {
     };
 
     invoke = async (name, options, ...parameters) => {
-        const source = options.source || this.accounts[0];
+        const source = options.source || this.accounts[0].address;
         const amount = options.amount || 0.00001;
         const fee = options.fee || 1000000;
         const gas_limit = options.gas_limit || 800000;
