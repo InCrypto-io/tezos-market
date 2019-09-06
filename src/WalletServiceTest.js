@@ -56,7 +56,7 @@ export default class WalletServiceTest extends React.Component {
         wallet.invoke("multp_set_values",
             {},
             "wallet service",
-            753
+            78963
         ).catch(console.error);
     };
 

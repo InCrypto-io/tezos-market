@@ -10,12 +10,9 @@ export default class Wallet {
     entryPoints = [];
 
     init = async (contractAddress, contract) => {
-        console.log(">>>>>>>>>>>>");
         if (!(await this.checkAccess())) {
             await this.requestAccess();
         }
-
-        console.log(">>>>>>+++++>>>>>>");
 
         this.accounts = await this.getAllAccounts();
 
@@ -23,8 +20,6 @@ export default class Wallet {
         this.contractAddress = contractAddress;
 
         this.entryPoints = await conseiljs.TezosContractIntrospector.generateEntryPointsFromCode(this.contract);
-
-        console.log(">>>>>>>ok>>>>>");
     };
 
     checkAccess = async () => {
@@ -43,28 +38,23 @@ export default class Wallet {
 
     getAllAccounts = async () => {
         return await window.tbapi.getAllAccounts().then(function (r) {
-            console.log(r);
             return r ? r.data : [];
         }).catch(() => ([]));
     };
 
     prepareParameter = (name, ...parameters) => {
         let result = "";
-
-        console.log(parameters);
-
         for (var i = 0; i < parameters.length; i++) {
-            console.log(">>>>>>>>>>>",typeof parameters[i], parameters[i]);
             if (typeof parameters[i] === "string") {
                 parameters[i] = `"${parameters[i]}"`;
             }
         }
         forEach(this.entryPoints, (v) => {
             if (v.name.includes(name)) {
-                result = v.generateParameter(parameters);
+                result = v.generateParameter(...parameters);
             }
         });
-        console.log("prepareParameter", name, parameters, result);
+        console.log("request parameters", result);
         return result;
     };
 
