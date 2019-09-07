@@ -12,16 +12,21 @@ code {
     monospace;
 }
 
-
 .page-body {
   flex-grow: 1;
+  flex-direction: column;
+  justify-items: start;
 }
 
 .header {
   display: flex;
   flex-direction: row;
+  position: fixed;
+}
+.header *{
+  margin: 15px;
 }
 
 .active {
-  color: aqua;
+  color: darkred;
 }
