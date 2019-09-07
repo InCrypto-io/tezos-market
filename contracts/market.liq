@@ -11,7 +11,7 @@ type storage = {
   owner:              address,
   orders:             map(int, order_t),
   whitlisted_issuers: set(address),
-  total_orders:       int,
+  total_orders:       nat,
 }
 
 let%entry whitelist_issuer = (issuer: address, storage: storage) => {
@@ -47,11 +47,11 @@ let%entry place_order = ((buy: bool, expiration: timestamp, asset: nat, issuer: 
   }
 
 
-  let id = storage.total_orders + 1;
+  let id = Map.size(storage.orders) + 1;
   let order = { id: id, buy_sell: buy, price: Current.amount(), nft_asset: asset, nft_issuer: issuer, expiration: expiration };
 
   let storage = storage.orders = Map.add(id, order, storage.orders);
-  let storage = storage.total_orders = id;
+  let storage = storage.total_orders = Map.size(storage.orders);
   
   ([], storage);
 };
@@ -73,7 +73,20 @@ let%entry cancel_order = (id: int, storage: storage) => {
   }
 
   let storage = storage.orders = Map.remove(id, storage.orders);
-  let storage = storage.total_orders = storage.total_orders - 1;
+  let storage = storage.total_orders = Map.size(storage.orders);
   
   ([], storage);
+};
+
+let%entry fill_order = (id: int, storage: storage) => {
+  switch (Map.find(id, storage.orders)) {
+    | None => failwith(("Order not found; ID=", id))
+    | Some( order ) =>
+      if (  Current.amount() < order.price ) {
+        failwith(("Incorrect price; expected: ", order.price, "; given: ", Current.amount()));
+      }
+      let storage = storage.orders = Map.remove(id, storage.orders);
+      let storage = storage.total_orders = Map.size(storage.orders);
+      ([], storage); 
+      };
 };
