@@ -39,14 +39,14 @@ export default class Home extends React.Component {
 
     goToBuy(id) {
         this.setState({
-            pageMode: "buy",
+            pageMode: "Buy",
             currentTokenId: id
         })
     }
 
     goToSell(id) {
         this.setState({
-            pageMode: "sell",
+            pageMode: "Sell",
             currentTokenId: id
         })
     }
@@ -60,7 +60,7 @@ export default class Home extends React.Component {
     onSelect = (id) => {
         console.log(id)
         this.setState({
-            pageMode: "buy",
+            pageMode: "Buy",
             currentTokenId: id
         })
     };
@@ -79,7 +79,7 @@ export default class Home extends React.Component {
         return <div className={"page-body"}>
             <Header pageMode={this.state.pageMode} onChangeMode={(id)=>this.onChangeMode(id)}/>
             {
-                (this.state.pageMode !== "buy" && this.state.pageMode !== "sell") ?
+                (this.state.pageMode !== "Buy" && this.state.pageMode !== "Sell") ?
                     <div className={"get-started-block"}>
                         <p>Super mega coin swap</p>
                         <p>We are the best blablabla lorem ipsum bla</p>
@@ -92,7 +92,7 @@ export default class Home extends React.Component {
             }
 
             {
-                this.state.pageMode === "buy" ? <BuySell elementID={this.state.currentTokenId} mode={this.state.pageMode}/> :
+                this.state.pageMode === "Buy" ? <BuySell elementID={this.state.currentTokenId} mode={this.state.pageMode}/> :
                     <Gallery
                         // tokens={()=>(this.getTokensForCurrentMode())}
                         tokens={this.state.tokens}

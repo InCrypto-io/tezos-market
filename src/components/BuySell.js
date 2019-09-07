@@ -6,9 +6,9 @@ export default class BuySell extends React.Component {
             return <span></span>;
         }
         return <div>
-            <img width={50} height={50} src={require(`../images/${this.props.elementID}.png`)}></img>
-            <span>{this.props.elementID}</span>
-            <button>{this.props.mode}</button>
+            <p>{this.props.mode}</p>
+            <img width={100} height={100} src={require(`../images/${this.props.elementID}.png`)}></img>
+            <button className={"get-started"}>{this.props.mode}</button>
         </div>
     }
 };
