@@ -23,6 +23,11 @@ code {
   flex-direction: row;
   position: fixed;
 }
+
+.header-links {
+  display: flex;
+  flex-direction: row;
+}
 .header *{
   margin: 15px;
 }
