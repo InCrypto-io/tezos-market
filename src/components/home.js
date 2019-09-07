@@ -1,6 +1,7 @@
 import * as React from "react";
 import Header from "./header";
 import Gallery from "./gallery";
+import BuySell from "./BuySell";
 
 export default class Home extends React.Component {
 
@@ -8,7 +9,29 @@ export default class Home extends React.Component {
         super(props);
         this.state = {
             pageMode: "my_assets",
-            currentTokenId: "0"
+            currentTokenId: "0",
+            tokens: [
+                {
+                    owner: "sfdsd",
+                    id: "sdfds",
+                },
+                {
+                    owner: "sfdsd",
+                    id: "ghgh",
+                },
+                {
+                    owner: "sfdsd",
+                    id: "dg",
+                },
+                {
+                    owner: "sfdsd",
+                    id: "dfghf",
+                },
+                {
+                    owner: "sfdsd",
+                    id: "dgf",
+                },
+            ]
         }
     }
 
@@ -32,6 +55,13 @@ export default class Home extends React.Component {
         })
     }
 
+    onSelect = (id) => {
+        this.setState({
+            pageMode: "buy",
+            currentTokenId: id
+        })
+    };
+
     render() {
         return <div className={"page-body"}>
             <Header></Header>
@@ -41,7 +71,11 @@ export default class Home extends React.Component {
                 Get started
             </button>
 
-            <Gallery></Gallery>
+            {
+                this.state.pageMode === "buy" ? <BuySell/> :
+                    <Gallery tokens={this.state.tokens} onSelect={this.onSelect}></Gallery>
+            }
+
 
         </div>
     }

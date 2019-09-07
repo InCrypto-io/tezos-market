@@ -7,9 +7,13 @@ export default class Gallery extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            elements: ["assets", "orders", "history"],
+            elements: ["assets", "orders", "history"]
         }
     }
+
+    onSelect = (id) => {
+        this.props.onSelect(id);
+    };
 
     render() {
         const {elements} = this.state;
@@ -18,7 +22,7 @@ export default class Gallery extends React.Component {
             <div className={"header-links"}>
                 {
                     elements.map(el => {
-                        return <Element element={el}/>
+                        return <Element element={el} onSelect={this.onSelect}/>
                     })
                 }
             </div>
