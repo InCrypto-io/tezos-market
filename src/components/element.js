@@ -6,7 +6,7 @@ export default class Element extends React.Component {
             return <div/>;
         }
         return <div className={"element"} onClick={()=>(this.props.onSelect(this.props.element.id))}>
-            <img src={require(`../images/${this.props.element.id}.png`)}></img>
+            <img width={50} height={50} src={require(`../images/${this.props.element.id}.png`)}></img>
             <span>{this.props.element.id}</span>
         </div>
     }
