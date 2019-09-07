@@ -15,14 +15,14 @@ export default class Header extends React.Component {
 
     render() {
         const {pages} = this.state;
-        const {mode} = this.props;
+        const {pageMode} = this.props;
         return <div className={"header"}>
             <img src={require("../logo.png")} width={285} height={100} alt=""/>
-            <span>title</span>
             <div className={"header-links"}>
                 {
                     pages.map(page => {
-                        return <div className={page === mode ? "active" : ""}><span onClick={() => {
+                        return <div className={page === pageMode ? "active" : ""}>
+                            <span className={"header-link"} onClick={() => {
                             this.setCurrent(page)
                         }}>{page}</span></div>
                     })

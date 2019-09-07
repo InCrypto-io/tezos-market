@@ -33,8 +33,14 @@ code {
   margin: 15px;
 }
 
+.header-link {
+  outline-color: green;
+}
+
 .active {
-  color: darkred;
+  color: dodgerblue;
+  font-weight: bolder;
+  text-underline: aqua;
 }
 
 .element {
