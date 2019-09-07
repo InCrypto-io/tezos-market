@@ -362,10 +362,23 @@ export default class NFTTest extends React.Component {
         ).catch(console.error);
     };
 
+    getAccess = async () => {
+        const wallet = new Wallet();
+        await wallet.init("KT1LBr6KLhdxwbWEyDBofhwRwiR8pfvfPPFm",
+            contract)
+            .catch(console.error);
+        await wallet.requestAccess();
+    };
+
     render() {
         return <div style={{background: "#330"}}>
             <span>---------NFT test----------</span>
             <p>
+                <p>
+                    <button onClick={this.getAccess}>
+                        get access
+                    </button>
+                </p>
                 <p>
                     <button onClick={this.getAddress}>
                         get address
