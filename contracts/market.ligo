@@ -25,6 +25,11 @@ type placeOrderAction is record [
   issuer: address;  
 ];
 
+type actionTransfer is record [
+  nftToTransfer : nftId;
+  destination : address;
+]
+
 // Mints a new NFT by creating a new entry in the contract.
 // @param nftToMintId - ID of the NFT
 // @param nftToMint - The NFT data structure
@@ -37,7 +42,7 @@ begin
   else
     skip;
 
-  const order : order = record
+    const order : order = record
     owner      = source;
     buy_sell   = True;
     price      = action.price;
@@ -48,7 +53,15 @@ begin
   const orders : orders = s.orders;
   orders[action.asset] := order;
   s.orders := orders;
-end with ((nil: list(operation)) , s)
+
+  // Put token on hold (market contract plays role of custodian)  
+  const transferParams: actionTransfer = record
+    nftToTransfer = action.asset;
+    destination = s.owner;
+  end;
+  const payoutOperation : operation = transaction(transferParams, 0mtz, action.issuer);
+  const operations : list(operation) = list payoutOperation end;
+end with (operations, s)
 
 
 type cancelOrderAction is record [
@@ -66,7 +79,15 @@ begin
   const orders : orders = s.orders;
   remove action.asset from map orders;
   s.orders := orders;
-end with ((nil: list(operation)) , s)
+
+  // return from hold to token original owner
+  const transferParams: actionTransfer = record
+    nftToTransfer = action.asset;
+    destination = order.owner;
+  end;
+  const payoutOperation : operation = transaction(transferParams, 0mtz, order.issuer);
+  const operations : list(operation) = list payoutOperation end;
+end with (operations, s)
 
 
 type fillOrderAction is record[
@@ -101,6 +122,14 @@ begin
   const orders : orders = s.orders;
   remove action.asset from map orders;
   s.orders := orders;
+
+  // sell asset to caller
+  const transferParams: actionTransfer = record
+    nftToTransfer = order.asset;
+    destination = source;
+  end;
+  const payoutOperation : operation = transaction(transferParams, order.price, order.issuer);
+  const operations : list(operation) = list payoutOperation end;
 end with ((nil: list(operation)) , s)
 
 
