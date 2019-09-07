@@ -5,7 +5,8 @@ const contract = `
 parameter
   (or :_entries
      (pair %transfer address nat)
-     (or (address %mint) (pair %approve address nat)));
+     (or (address %mint)
+         (or (pair %approve address nat) (pair %transferFrom address (pair address nat)))));
 storage
   (pair :storage
      (big_map :accounts
@@ -42,20 +43,39 @@ code { DUP ;
                PAIR %balance }
              {} ;
            DIP { DROP } } ;
-       DUUP @parameter ;
-       IF_LEFT
-         { RENAME @_dest_token_id_slash_36 ;
-           DUUP @get_account ;
-           DUUUUUP @storage ;
-           DUUUP ;
-           CDR @token_id ;
-           PAIR ;
-           DUUUP ;
-           CAR @dest ;
-           PAIR ;
-           SENDER ;
-           PAIR ;
-           PAIR ;
+       DUP @get_account ;
+       LAMBDA
+         (pair (pair address
+                     (pair address
+                           (pair nat
+                                 (pair :storage
+                                    (big_map :accounts
+                                       address
+                                       (pair :account
+                                          (nat %balance)
+                                          (pair (set %tokens nat) (map %allowances address (set nat)))))
+                                    (pair (nat %version)
+                                          (pair (nat %totalSupply) (pair (string %name) (pair (string %symbol) (address %owner)))))))))
+               (lambda
+                  (pair address
+                        (big_map
+                           address
+                           (pair :account
+                              (nat %balance)
+                              (pair (set %tokens nat) (map %allowances address (set nat))))))
+                  (pair :account
+                     (nat %balance)
+                     (pair (set %tokens nat) (map %allowances address (set nat))))))
+         (pair (list operation)
+               (pair :storage
+                  (big_map :accounts
+                     address
+                     (pair :account
+                        (nat %balance)
+                        (pair (set %tokens nat) (map %allowances address (set nat)))))
+                  (pair (nat %version)
+                        (pair (nat %totalSupply) (pair (string %name) (pair (string %symbol) (address %owner)))))))
+         { RENAME @_from_dest_token_id_storage__get_account_slash_8 ;
            DUP ;
            CAR ;
            CAR @from ;
@@ -145,24 +165,32 @@ code { DUP ;
            DUUUUUUUUUUUP @dest ;
            DIP { SOME } ;
            DIIIIP
-             { DROP ;
-               DROP ;
-               DROP ;
-               DROP ;
-               DROP ;
-               DROP ;
-               DROP ;
-               DROP ;
-               DROP ;
-               DROP ;
-               DROP } ;
+             { DROP ; DROP ; DROP ; DROP ; DROP ; DROP ; DROP ; DROP ; DROP ; DROP } ;
            UPDATE @accounts ;
            PAIR %accounts ;
            NIL operation ;
-           PAIR }
+           PAIR } ;
+       PAIR @perform_transfer ;
+       DUUUP @parameter ;
+       IF_LEFT
+         { RENAME @_dest_token_id_slash_36 ;
+           DUUP @perform_transfer ;
+           DUUUUUUP @storage ;
+           DUUUP ;
+           CDR @token_id ;
+           PAIR ;
+           DUUUP ;
+           CAR @dest ;
+           PAIR ;
+           SENDER ;
+           PAIR ;
+           DIP { DUP ; CAR ; SWAP ; CDR } ;
+           DIIIP { DROP } ;
+           PAIR ;
+           EXEC }
          { IF_LEFT
              { RENAME @dest_slash_40 ;
-               DUUUUP @storage ;
+               DUUUUUP @storage ;
                DUP @storage ;
                CDDDDDR %owner ;
                SENDER ;
@@ -170,7 +198,7 @@ code { DUP ;
                NEQ ;
                IF { PUSH string "Only owner can mint tokens" ; FAILWITH } { UNIT } ;
                DROP ;
-               DUUUP @get_account ;
+               DUUUUP @get_account ;
                DUUP @storage ;
                DUUUUP @dest ;
                PAIR ;
@@ -233,68 +261,137 @@ code { DUP ;
                PAIR %accounts ;
                NIL operation ;
                PAIR }
-             { RENAME @_spender_token_id_slash_42 ;
-               DUUUUP @storage ;
-               DUUP ;
-               CAR @spender ;
-               DUUUP ;
-               CDR @token_id ;
-               DUUUUUP @get_account ;
-               DUUUUP @storage ;
-               CAR %accounts ;
-               SENDER ;
-               PAIR ;
-               EXEC @account_sender ;
-               DUP @account_sender ;
-               CDAR %tokens ;
-               DUUUP @token_id ;
-               MEM ;
-               NOT ;
-               IF { DUP @account_sender ;
-                    CDAR %tokens ;
-                    PUSH string "There is no such token which You want to approve" ;
-                    PAIR ;
-                    FAILWITH }
-                  { UNIT } ;
-               DROP ;
-               DUUUUP @storage ;
-               CDR ;
-               DUUUUUP @storage ;
-               CAR %accounts ;
-               DUUUP @account_sender ;
-               DUP ;
-               CAR %balance ;
-               SWAP ;
-               CDR ;
-               CAR %tokens ;
-               DUUUUUP @account_sender ;
-               CDDR %allowances ;
-               DUUUUUUP @account_sender ;
-               CDDR %allowances ;
-               DUUUUUUUUUP @spender ;
-               GET ;
-               IF_NONE
-                 { PUSH string "Spender address has no any allowances" ; FAILWITH }
-                 {} ;
-               RENAME @spenders_allowances ;
-               DUUUUUUUUP @token_id ;
-               DIP { PUSH bool True } ;
-               UPDATE @new_tokens_allowance ;
-               DUUUUUUUUUP @spender ;
-               DIP { SOME } ;
-               UPDATE ;
-               SWAP ;
-               PAIR %tokens %allowances ;
-               SWAP ;
-               PAIR @account_sender %balance ;
-               SENDER ;
-               DIP { SOME } ;
-               DIIIIP { DROP ; DROP ; DROP ; DROP ; DROP } ;
-               UPDATE ;
-               PAIR @storage %accounts ;
-               NIL operation ;
-               PAIR } } ;
-       DIP { DROP ; DROP ; DROP } };
+             { IF_LEFT
+                 { RENAME @_spender_token_id_slash_42 ;
+                   DUUUUUP @storage ;
+                   DUUP ;
+                   CAR @spender ;
+                   DUUUP ;
+                   CDR @token_id ;
+                   DUUUUUUP @get_account ;
+                   DUUUUP @storage ;
+                   CAR %accounts ;
+                   SENDER ;
+                   PAIR ;
+                   EXEC @account_sender ;
+                   DUP @account_sender ;
+                   CDAR %tokens ;
+                   DUUUP @token_id ;
+                   MEM ;
+                   NOT ;
+                   IF { DUP @account_sender ;
+                        CDAR %tokens ;
+                        PUSH string "There is no such token which You want to approve" ;
+                        PAIR ;
+                        FAILWITH }
+                      { UNIT } ;
+                   DROP ;
+                   DUUUUP @storage ;
+                   CDR ;
+                   DUUUUUP @storage ;
+                   CAR %accounts ;
+                   DUUUP @account_sender ;
+                   DUP ;
+                   CAR %balance ;
+                   SWAP ;
+                   CDR ;
+                   CAR %tokens ;
+                   DUUUUUP @account_sender ;
+                   CDDR %allowances ;
+                   DUUUUUUP @account_sender ;
+                   CDDR %allowances ;
+                   DUUUUUUUUUP @spender ;
+                   GET ;
+                   IF_NONE
+                     { PUSH string "Spender address has no any allowances" ; FAILWITH }
+                     {} ;
+                   RENAME @spenders_allowances ;
+                   DUUUUUUUUP @token_id ;
+                   DIP { PUSH bool True } ;
+                   UPDATE @new_tokens_allowance ;
+                   DUUUUUUUUUP @spender ;
+                   DIP { SOME } ;
+                   UPDATE ;
+                   SWAP ;
+                   PAIR %tokens %allowances ;
+                   SWAP ;
+                   PAIR @account_sender %balance ;
+                   SENDER ;
+                   DIP { SOME } ;
+                   DIIIIP { DROP ; DROP ; DROP ; DROP ; DROP } ;
+                   UPDATE ;
+                   PAIR @storage %accounts ;
+                   NIL operation ;
+                   PAIR }
+                 { RENAME @_from_dest_token_id_slash_52 ;
+                   DUUUUUP @storage ;
+                   DUUP ;
+                   CAR @from ;
+                   DUUUP ;
+                   CDDR @token_id ;
+                   DUUUUUUP @get_account ;
+                   DUUUUP @storage ;
+                   CAR %accounts ;
+                   DUUUUP @from ;
+                   PAIR ;
+                   EXEC @account_from ;
+                   DUUUUUUP @perform_transfer ;
+                   DUUUUUP @storage ;
+                   CDR ;
+                   DUUUUUUP @storage ;
+                   CAR %accounts ;
+                   DUUUUP @account_from ;
+                   DUP ;
+                   CAR %balance ;
+                   SWAP ;
+                   CDR ;
+                   CAR %tokens ;
+                   DUUUUUUP @account_from ;
+                   CDDR %allowances ;
+                   DUUUUUUUP @account_from ;
+                   CDDR %allowances ;
+                   SENDER ;
+                   GET ;
+                   IF_NONE
+                     { DUUUUUUUUUP @from ;
+                       PUSH string "Not allowed to spend from" ;
+                       PAIR ;
+                       FAILWITH }
+                     { DUP @allowed ;
+                       DUUUUUUUUUUP @token_id ;
+                       MEM ;
+                       NOT ;
+                       IF { PUSH string "Not allowed to spend this token" ; FAILWITH } { UNIT } ;
+                       DROP ;
+                       DUP @allowed ;
+                       DUUUUUUUUUUP @token_id ;
+                       DIP { PUSH bool False } ;
+                       DIIIP { DROP } ;
+                       UPDATE } ;
+                   RENAME @new_allowances_from ;
+                   SENDER ;
+                   DIP { SOME } ;
+                   UPDATE @account_from_map ;
+                   SWAP ;
+                   PAIR %tokens %allowances ;
+                   SWAP ;
+                   PAIR @account_from %balance ;
+                   DUUUUUUUP @from ;
+                   DIP { SOME } ;
+                   UPDATE ;
+                   PAIR @storage %accounts ;
+                   DUUUUP @token_id ;
+                   PAIR ;
+                   DUUUUUUUP ;
+                   CDAR @dest ;
+                   PAIR ;
+                   DUUUUUP @from ;
+                   PAIR ;
+                   DIP { DUP ; CAR ; SWAP ; CDR } ;
+                   DIIIP { DROP ; DROP ; DROP ; DROP ; DROP } ;
+                   PAIR ;
+                   EXEC } } } ;
+       DIP { DROP ; DROP ; DROP ; DROP } };
 `;
 
 export default class NFTTest extends React.Component {
@@ -318,7 +415,7 @@ export default class NFTTest extends React.Component {
 
     getAddress = async () => {
         const wallet = new Wallet();
-        await wallet.init("KT1LBr6KLhdxwbWEyDBofhwRwiR8pfvfPPFm",
+        await wallet.init("KT1RVJpyqptByTfZGaAH7qrtXGuktW5Cfd6B",
             contract)
             .catch(console.error);
 
@@ -329,7 +426,7 @@ export default class NFTTest extends React.Component {
 
     mint = async () => {
         const wallet = new Wallet();
-        await wallet.init("KT1LBr6KLhdxwbWEyDBofhwRwiR8pfvfPPFm",
+        await wallet.init("KT1RVJpyqptByTfZGaAH7qrtXGuktW5Cfd6B",
             contract)
             .catch(console.error);
         wallet.invoke("mint",
@@ -340,7 +437,7 @@ export default class NFTTest extends React.Component {
 
     transfer = async () => {
         const wallet = new Wallet();
-        await wallet.init("KT1LBr6KLhdxwbWEyDBofhwRwiR8pfvfPPFm",
+        await wallet.init("KT1RVJpyqptByTfZGaAH7qrtXGuktW5Cfd6B",
             contract)
             .catch(console.error);
         wallet.invoke("transfer",
@@ -352,7 +449,7 @@ export default class NFTTest extends React.Component {
 
     approve = async () => {
         const wallet = new Wallet();
-        await wallet.init("KT1LBr6KLhdxwbWEyDBofhwRwiR8pfvfPPFm",
+        await wallet.init("KT1RVJpyqptByTfZGaAH7qrtXGuktW5Cfd6B",
             contract)
             .catch(console.error);
         wallet.invoke("approve",
@@ -364,7 +461,7 @@ export default class NFTTest extends React.Component {
 
     getAccess = async () => {
         const wallet = new Wallet();
-        await wallet.init("KT1LBr6KLhdxwbWEyDBofhwRwiR8pfvfPPFm",
+        await wallet.init("KT1RVJpyqptByTfZGaAH7qrtXGuktW5Cfd6B",
             contract)
             .catch(console.error);
         await wallet.requestAccess();
@@ -373,6 +470,7 @@ export default class NFTTest extends React.Component {
     render() {
         return <div style={{background: "#330"}}>
             <span>---------NFT test----------</span>
+            <p>tz1iycxdCJ3xMYFJ7Qr8zBudNxk89S2TQS7S</p>
             <p>
                 <p>
                     <button onClick={this.getAccess}>
