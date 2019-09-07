@@ -60,7 +60,7 @@ export default class Home extends React.Component {
     onSelect = (id) => {
         console.log(id)
         this.setState({
-            pageMode: "Buy",
+            pageMode: id % 2 === 0 ? "Buy" : "Sell",
             currentTokenId: id
         })
     };
@@ -92,7 +92,8 @@ export default class Home extends React.Component {
             }
 
             {
-                this.state.pageMode === "Buy" ? <BuySell elementID={this.state.currentTokenId} mode={this.state.pageMode}/> :
+                (this.state.pageMode === "Buy" || this.state.pageMode === "Sell") ?
+                    <BuySell elementID={this.state.currentTokenId} mode={this.state.pageMode}/> :
                     <Gallery
                         // tokens={()=>(this.getTokensForCurrentMode())}
                         tokens={this.state.tokens}
