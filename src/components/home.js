@@ -62,10 +62,16 @@ export default class Home extends React.Component {
         })
     };
 
+    onChangeMode = (mode) => {
+        this.setState({
+            pageMode: mode,
+        })
+    };
+
     render() {
         return <div className={"page-body"}>
-            <Header></Header>
-            <span>Description</span>
+            <Header pageMode={this.state.pageMode} onChangeMode={this.onChangeMode}></Header>
+            <span>{this.state.pageMode}</span>
 
             <button>
                 Get started

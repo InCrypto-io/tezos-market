@@ -5,15 +5,12 @@ export default class Header extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            current: "assets",
             pages: ["assets", "orders", "history"],
         }
     }
 
     setCurrent = (what) => {
-        this.setState({
-            current: what
-        })
+        this.props.onChangeMode(what);
     };
 
     render() {
