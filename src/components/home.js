@@ -80,7 +80,7 @@ export default class Home extends React.Component {
             <Header pageMode={this.state.pageMode} onChangeMode={(id)=>this.onChangeMode(id)}/>
             {
                 (this.state.pageMode !== "buy" && this.state.pageMode !== "sell") ?
-                    <div>
+                    <div className={"get-started-block"}>
                         <p>Super mega coin swap</p>
                         <p>We are the best blablabla lorem ipsum bla</p>
                         <p>Bla ipsum Lorem bla</p>

@@ -60,6 +60,7 @@ code {
 .gallery {
   display: flex;
   flex-direction: column;
+  align-self: center;
 }
 
 .get-started {
@@ -71,4 +72,10 @@ code {
   font-weight: bold;
   align-self: center;
   margin-bottom: 50px;
+  border-radius: 5px;
+}
+
+.get-started-block {
+  border: gray solid;
+  width: 100vw;
 }
