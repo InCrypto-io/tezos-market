@@ -59,7 +59,8 @@ begin
     nftToTransfer = action.asset;
     destination = s.owner;
   end;
-  const payoutOperation : operation = transaction(transferParams, 0mtz, action.issuer);
+  const receiver : contract(actionTransfer) = get_contract(action.issuer);
+  const payoutOperation : operation = transaction(transferParams, 0mtz, receiver);
   const operations : list(operation) = list payoutOperation end;
 end with (operations, s)
 
@@ -85,7 +86,8 @@ begin
     nftToTransfer = action.asset;
     destination = order.owner;
   end;
-  const payoutOperation : operation = transaction(transferParams, 0mtz, order.issuer);
+  const receiver : contract(actionTransfer) = get_contract(order.nft_issuer);
+  const payoutOperation : operation = transaction(transferParams, 0mtz, receiver);
   const operations : list(operation) = list payoutOperation end;
 end with (operations, s)
 
@@ -125,12 +127,13 @@ begin
 
   // sell asset to caller
   const transferParams: actionTransfer = record
-    nftToTransfer = order.asset;
+    nftToTransfer = order.nft_asset;
     destination = source;
   end;
-  const payoutOperation : operation = transaction(transferParams, order.price, order.issuer);
+  const receiver : contract(actionTransfer) = get_contract(order.nft_issuer);
+  const payoutOperation : operation = transaction(transferParams, order.price, receiver);
   const operations : list(operation) = list payoutOperation end;
-end with ((nil: list(operation)) , s)
+end with (operations, s)
 
 
 type whitelistIssuerAction is record[
