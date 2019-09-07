@@ -36,3 +36,16 @@ code {
 .active {
   color: darkred;
 }
+
+.element {
+  background-color: green;
+  width: 100px;
+  height: 100px;
+  margin: 10px;
+}
+
+.gallery {
+  display: flex;
+  flex-direction: row;
+}
+
