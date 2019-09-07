@@ -8,6 +8,7 @@ export default class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            user: "sfdsd",
             pageMode: "my_assets",
             currentTokenId: "0",
             tokens: [
@@ -16,15 +17,15 @@ export default class Home extends React.Component {
                     id: "sdfds",
                 },
                 {
-                    owner: "sfdsd",
+                    owner: "dcvs",
                     id: "ghgh",
                 },
                 {
-                    owner: "sfdsd",
+                    owner: "dvdf",
                     id: "dg",
                 },
                 {
-                    owner: "sfdsd",
+                    owner: "fff",
                     id: "dfghf",
                 },
                 {
@@ -56,6 +57,7 @@ export default class Home extends React.Component {
     }
 
     onSelect = (id) => {
+        console.log(id)
         this.setState({
             pageMode: "buy",
             currentTokenId: id
@@ -68,9 +70,13 @@ export default class Home extends React.Component {
         })
     };
 
+    getTokensForCurrentMode = () => {
+        return this.state.tokens;
+    };
+
     render() {
         return <div className={"page-body"}>
-            <Header pageMode={this.state.pageMode} onChangeMode={this.onChangeMode}></Header>
+            <Header pageMode={this.state.pageMode} onChangeMode={(id)=>this.onChangeMode(id)}/>
             <span>{this.state.pageMode}</span>
 
             <button>
@@ -78,8 +84,10 @@ export default class Home extends React.Component {
             </button>
 
             {
-                this.state.pageMode === "buy" ? <BuySell/> :
-                    <Gallery tokens={this.state.tokens} onSelect={this.onSelect}></Gallery>
+                this.state.pageMode === "buy" ? <BuySell element={this.state.currentTokenId} mode={this.state.pageMode}/> :
+                    <Gallery
+                        tokens={()=>this.getTokensForCurrentMode()}
+                        onSelect={this.onSelect}/>
             }
 
 

@@ -39,6 +39,7 @@ code {
 
 .element {
   background-color: green;
+  color: brown;
   width: 100px;
   height: 100px;
   margin: 10px;

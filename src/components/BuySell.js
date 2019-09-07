@@ -2,9 +2,10 @@ import * as React from "react";
 
 export default class BuySell extends React.Component {
     render() {
-        return <div className={"element"}>
-            <span>{this.props.mode}</span>
+        console.log(this.props)
+        return <div>
             <span>{this.props.element}</span>
+            <button>{this.props.mode}</button>
         </div>
     }
 };

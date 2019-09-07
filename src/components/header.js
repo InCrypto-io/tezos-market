@@ -14,17 +14,20 @@ export default class Header extends React.Component {
     };
 
     render() {
-        const {pages, current} = this.state;
+        const {pages} = this.state;
+        const {mode} = this.props;
         return <div className={"header"}>
             <img src="../logo.svg" alt=""/>
             <span>title</span>
             <div className={"header-links"}>
-            {
-                pages.map(page => {
-                    return <div className={page === current ? "active" : ""}><span onClick={()=>{this.setCurrent(page)}}>{page}</span></div>
-                })
-            }
-        </div>
+                {
+                    pages.map(page => {
+                        return <div className={page === mode ? "active" : ""}><span onClick={() => {
+                            this.setCurrent(page)
+                        }}>{page}</span></div>
+                    })
+                }
+            </div>
         </div>
     }
 };
