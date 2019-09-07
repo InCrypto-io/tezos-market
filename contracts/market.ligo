@@ -148,9 +148,9 @@ begin
   skip;
 end with 
  case action of
- | WhitelistIssuer (args) -> whitelistIssuer (args, s)
- | BlockIssuer (args)     -> blockIssuer (args, s)
- | PlaceOrder (args)      -> placeOrder (args, s)
- | CancelOrder (args)     -> cancelOrder (args, s)
- | FillOrder (args)       -> fillOrder (args, s)
+ | WhitelistIssuer (params) -> whitelistIssuer (params, s)
+ | BlockIssuer (params)     -> blockIssuer (params, s)
+ | PlaceOrder (params)      -> placeOrder (params, s)
+ | CancelOrder (params)     -> cancelOrder (params, s)
+ | FillOrder (params)       -> fillOrder (params, s)
 end
