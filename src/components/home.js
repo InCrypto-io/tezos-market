@@ -79,7 +79,13 @@ export default class Home extends React.Component {
             <Header pageMode={this.state.pageMode} onChangeMode={(id)=>this.onChangeMode(id)}/>
             <span>{this.state.pageMode}</span>
 
-            <button>
+            <div>
+                <p>Super mega coin swap</p>
+                <p>We are the best blablabla lorem ipsum bla</p>
+                <p>Bla ipsum Lorem bla</p>
+            </div>
+
+            <button className={"get-started"}>
                 Get started
             </button>
 
