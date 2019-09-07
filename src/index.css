@@ -44,16 +44,22 @@ code {
 }
 
 .element {
-  background-color: green;
-  color: brown;
   width: 100px;
   height: 100px;
-  margin: 10px;
+  margin: 30px;
+  border: cadetblue solid;
+  padding: 10px;
+}
+
+.element-description {
+  font-weight: bold;
+  color: black;
+  text-align: center;
 }
 
 .gallery {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 }
 
 .get-started {

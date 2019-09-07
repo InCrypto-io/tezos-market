@@ -11,6 +11,7 @@ export default class Home extends React.Component {
             user: "sfdsd",
             pageMode: "my_assets",
             currentTokenId: "0",
+            title: "Top rated",
             tokens: [
                 {
                     owner: "sfdsd",
@@ -94,6 +95,7 @@ export default class Home extends React.Component {
                     <Gallery
                         // tokens={()=>(this.getTokensForCurrentMode())}
                         tokens={this.state.tokens}
+                        title={this.state.title}
                         onSelect={this.onSelect}/>
             }
 
