@@ -20,14 +20,12 @@ export default class Header extends React.Component {
             <img src="../logo.svg" alt=""/>
             <span>title</span>
             <div className={"header-links"}>
-                {
-                    pages.map(page => {
-                        return <div className={page === mode ? "active" : ""}><span onClick={() => {
-                            this.setCurrent(page)
-                        }}>{page}</span></div>
-                    })
-                }
-            </div>
+            {
+                pages.map(page => {
+                    return <div className={page === mode ? "active" : ""}><span onClick={()=>{this.setCurrent(page)}}>{page}</span></div>
+                })
+            }
+        </div>
         </div>
     }
 };

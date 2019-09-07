@@ -1,5 +1,4 @@
 import * as React from "react";
-import Header from "./header";
 import Element from "./element";
 
 export default class Gallery extends React.Component {
@@ -7,7 +6,6 @@ export default class Gallery extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            elements: ["assets", "orders", "history"]
         }
     }
 
@@ -16,12 +14,12 @@ export default class Gallery extends React.Component {
     };
 
     render() {
-        const {elements} = this.state;
+        const {tokens} = this.props;
         return <div className={"gallery"}>
             <span>Gal title</span>
             <div className={"header-links"}>
                 {
-                    elements.map(el => {
+                    tokens.map(el => {
                         return <Element element={el} onSelect={this.onSelect}/>
                     })
                 }

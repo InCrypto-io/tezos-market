@@ -14,23 +14,23 @@ export default class Home extends React.Component {
             tokens: [
                 {
                     owner: "sfdsd",
-                    id: "sdfds",
+                    id: "0",
                 },
                 {
                     owner: "dcvs",
-                    id: "ghgh",
+                    id: "1",
                 },
                 {
                     owner: "dvdf",
-                    id: "dg",
+                    id: "2",
                 },
                 {
                     owner: "fff",
-                    id: "dfghf",
+                    id: "3",
                 },
                 {
                     owner: "sfdsd",
-                    id: "dgf",
+                    id: "4",
                 },
             ]
         }
@@ -86,10 +86,10 @@ export default class Home extends React.Component {
             {
                 this.state.pageMode === "buy" ? <BuySell element={this.state.currentTokenId} mode={this.state.pageMode}/> :
                     <Gallery
-                        tokens={()=>this.getTokensForCurrentMode()}
+                        // tokens={()=>(this.getTokensForCurrentMode())}
+                        tokens={this.state.tokens}
                         onSelect={this.onSelect}/>
             }
-
 
         </div>
     }
