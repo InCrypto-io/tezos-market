@@ -78,17 +78,18 @@ export default class Home extends React.Component {
     render() {
         return <div className={"page-body"}>
             <Header pageMode={this.state.pageMode} onChangeMode={(id)=>this.onChangeMode(id)}/>
-            <span>{this.state.pageMode}</span>
+            {
+                (this.state.pageMode !== "buy" && this.state.pageMode !== "sell") ?
+                    <div>
+                        <p>Super mega coin swap</p>
+                        <p>We are the best blablabla lorem ipsum bla</p>
+                        <p>Bla ipsum Lorem bla</p>
 
-            <div>
-                <p>Super mega coin swap</p>
-                <p>We are the best blablabla lorem ipsum bla</p>
-                <p>Bla ipsum Lorem bla</p>
-            </div>
-
-            <button className={"get-started"}>
-                Get started
-            </button>
+                        <button className={"get-started"}>
+                            Get started
+                        </button>
+                    </div> : <div/>
+            }
 
             {
                 this.state.pageMode === "buy" ? <BuySell elementID={this.state.currentTokenId} mode={this.state.pageMode}/> :
