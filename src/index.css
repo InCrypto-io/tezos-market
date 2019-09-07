@@ -11,3 +11,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+
+.page-body {
+  flex-grow: 1;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+}
+
+.active {
+  color: aqua;
+}
