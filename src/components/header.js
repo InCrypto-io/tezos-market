@@ -5,7 +5,7 @@ export default class Header extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            pages: ["assets", "orders", "history"],
+            pages: ["My assets", "My orders", "My history"],
         }
     }
 
