@@ -84,7 +84,7 @@ export default class Home extends React.Component {
             </button>
 
             {
-                this.state.pageMode === "buy" ? <BuySell element={this.state.currentTokenId} mode={this.state.pageMode}/> :
+                this.state.pageMode === "buy" ? <BuySell elementID={this.state.currentTokenId} mode={this.state.pageMode}/> :
                     <Gallery
                         // tokens={()=>(this.getTokensForCurrentMode())}
                         tokens={this.state.tokens}

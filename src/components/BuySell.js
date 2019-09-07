@@ -2,9 +2,12 @@ import * as React from "react";
 
 export default class BuySell extends React.Component {
     render() {
-        console.log(this.props)
+        if(!this.props.elementID){
+            return <span></span>;
+        }
         return <div>
-            <span>{this.props.element}</span>
+            <img width={50} height={50} src={require(`../images/${this.props.elementID}.png`)}></img>
+            <span>{this.props.elementID}</span>
             <button>{this.props.mode}</button>
         </div>
     }
