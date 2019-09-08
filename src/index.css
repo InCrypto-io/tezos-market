@@ -94,6 +94,14 @@ code {
   justify-content: space-evenly;
 }
 
+.to-home {
+  display: flex;
+  flex-direction: column;
+  align-items:  end;
+  height: 400px;
+  justify-content: space-evenly;
+}
+
 .footer {
   height: 100px;
   display: flex;

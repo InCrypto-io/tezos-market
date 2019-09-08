@@ -345,6 +345,10 @@ export default class BuySell extends React.Component {
         ).catch(console.error);
     };
 
+    goToHome = async () => {
+        this.props.goToHome()
+    };
+
     render() {
         if(!this.props.elementID){
             return <span></span>;
@@ -354,6 +358,7 @@ export default class BuySell extends React.Component {
             <img width={100} height={100} src={require(`../images/${this.props.elementID}.png`)}></img>
             {this.props.mode === "Buy" ? <span>50 TZ</span>  : <input value={50}/>}
             <button className={"get-started"} onClick={this.doAction}>{this.props.mode}</button>
+            <button className={"to-home"} onClick={this.goToHome}>BACK</button>
         </div>
     }
 };

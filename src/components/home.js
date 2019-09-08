@@ -22,27 +22,19 @@ export default class Home extends React.Component {
                     owner: "dcvs",
                     id: "1",
                 },
-                {
-                    owner: "dvdf",
-                    id: "2",
-                },
-                {
-                    owner: "fff",
-                    id: "3",
-                },
-                {
-                    owner: "sfdsd",
-                    id: "4",
-                },
             ],
             assets: [
                 {
                     owner: "sfdsd",
-                    id: "8",
+                    id: "0",
                 },
                 {
                     owner: "dcvs",
-                    id: "10",
+                    id: "1",
+                },
+                {
+                    owner: "dcvs",
+                    id: "2",
                 },
             ]
         }
@@ -80,6 +72,13 @@ export default class Home extends React.Component {
         this.setState({
             pageMode: mode,
             title: mode
+        })
+    };
+
+    goToHome = () => {
+        this.setState({
+            pageMode: "my_assets",
+            title: ""
         })
     };
 
