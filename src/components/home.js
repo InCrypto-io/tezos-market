@@ -100,7 +100,8 @@ export default class Home extends React.Component {
 
             {
                 (this.state.pageMode === "Buy" || this.state.pageMode === "Sell") ?
-                    <BuySell elementID={this.state.currentTokenId} mode={this.state.pageMode}/> :
+                    <BuySell elementID={this.state.currentTokenId} mode={this.state.pageMode}
+                             goToHome={this.goToHome}/> :
                     <Gallery
                         tokens={this.state.pageMode === "My assets" ? this.state.assets : this.state.tokens}
                         title={this.state.title}
