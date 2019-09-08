@@ -37,11 +37,6 @@ export default class Home extends React.Component {
                     id: "1",
                     name: "Rifle"
                 },
-                {
-                    owner: "dcvs",
-                    id: "2",
-                    name: "Revos"
-                },
             ]
         }
     }
@@ -86,7 +81,24 @@ export default class Home extends React.Component {
     goToHome = () => {
         this.setState({
             pageMode: "my_assets",
-            title: ""
+            title: "",
+            tokens:[
+                {
+                    owner: "sfdsd",
+                    id: "0",
+                    name: "Sword"
+                },
+                {
+                    owner: "dcvs",
+                    id: "1",
+                    name: "Rifle"
+                },
+                {
+                    owner: "dcvs",
+                    id: "2",
+                    name: "Revos"
+                },
+            ]
         })
     };
 
