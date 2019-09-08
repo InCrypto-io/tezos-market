@@ -88,9 +88,9 @@ export default class Home extends React.Component {
             {
                 (this.state.pageMode !== "Buy" && this.state.pageMode !== "Sell") ?
                     <div className={"get-started-block"}>
-                        <p>Super mega coin swap</p>
-                        <p>We are the best blablabla lorem ipsum bla</p>
-                        <p>Bla ipsum Lorem bla</p>
+                        <p>Swap</p>
+                        <p>any digital asset</p>
+                        <p>in trustless way</p>
 
                         <button className={"get-started"}>
                             Get started
