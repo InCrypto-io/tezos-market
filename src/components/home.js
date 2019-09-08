@@ -69,7 +69,6 @@ export default class Home extends React.Component {
     }
 
     onSelect = (id, name) => {
-        console.log(id)
         this.setState({
             pageMode: id % 2 === 0 ? "Buy" : "Sell",
             currentTokenId: id,
@@ -109,7 +108,8 @@ export default class Home extends React.Component {
 
             {
                 (this.state.pageMode === "Buy" || this.state.pageMode === "Sell") ?
-                    <BuySell elementID={this.state.currentTokenId} mode={this.state.pageMode}
+                    <BuySell elementID={this.state.currentTokenId}
+                             mode={this.state.pageMode}
                              name={this.state.currentElName}
                              goToHome={this.goToHome}/> :
                     <Gallery

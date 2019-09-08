@@ -356,7 +356,7 @@ export default class BuySell extends React.Component {
         return <div className={"buy-sell"}>
             <p>{this.props.mode}</p>
             <img width={100} height={100} src={require(`../images/${this.props.elementID}.png`)}></img>
-            <p >{this.props.name}</p>
+            <p>{this.props.name}</p>
             {this.props.mode === "Buy" ? <span>50 TZ</span>  : <input value={50}/>}
             <button className={"get-started"} onClick={this.doAction}>{this.props.mode}</button>
             <button className={"to-home"} onClick={this.goToHome}>BACK</button>

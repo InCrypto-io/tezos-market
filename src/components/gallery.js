@@ -10,7 +10,7 @@ export default class Gallery extends React.Component {
     }
 
     onSelect = (id, name) => {
-        this.props.onSelect(id);
+        this.props.onSelect(id, name);
     };
 
     render() {
