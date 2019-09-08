@@ -17,7 +17,7 @@ export default class Gallery extends React.Component {
         const {tokens, title} = this.props;
         return <div className={"gallery"}>
             <span>{title}</span>
-            <div className={"header-links"}>
+            <div className={"gal"}>
                 {
                     tokens.map(el => {
                         return <Element element={el} onSelect={this.onSelect}/>

@@ -94,6 +94,11 @@ code {
   justify-content: space-evenly;
 }
 
+.gal {
+  display: flex;
+  flex-direction: row;
+}
+
 .to-home {
   background: steelblue;;
   color: white;
