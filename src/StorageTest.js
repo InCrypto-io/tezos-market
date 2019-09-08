@@ -1,4 +1,5 @@
 import * as React from "react";
+import rpcStorage from "./RPCStorage";
 // import * as eztz from "./eztz.min";
 const eztz = {};
 // require("./eztz.min.js");
@@ -344,11 +345,15 @@ export default class ServiceTest extends React.Component {
     }
 
     handleTx = async () => {
-        eztz.contract.storage("KT1CZ2S9eSM8csf5Cnv7TZs7EnbqMGYnAxFv").then(function(res){
-            this.setState({
-                storage: res
-            });
-        }).catch(function(e){});
+        // eztz.contract.storage("KT1CZ2S9eSM8csf5Cnv7TZs7EnbqMGYnAxFv").then(function(res){
+        //     this.setState({
+        //         storage: res
+        //     });
+        // }).catch(function(e){});
+
+        this.setState({
+            storage: JSON.stringify(rpcStorage("KT1CZ2S9eSM8csf5Cnv7TZs7EnbqMGYnAxFv"))
+        });
     };
 
     render() {
