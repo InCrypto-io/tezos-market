@@ -104,6 +104,7 @@ code {
   align-self: end;
   margin-bottom: 50px;
   border-radius: 5px;
+  margin-left: 100px;
 }
 
 .footer {
@@ -111,5 +112,6 @@ code {
   display: flex;
   flex-direction: row;
   justify-content: start;
-  margin-top: 50px;
+  margin-top: 70px;
+  width: 100vw;
 }
