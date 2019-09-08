@@ -9,7 +9,7 @@ function App() {
     <div className="App">
       <header className="App-header">
           {/* <NFTTest></NFTTest> */}
-          {/* <WalletServiceTest></WalletServiceTest> */}
+           <WalletServiceTest></WalletServiceTest>
           <Home/>
       </header>
     </div>

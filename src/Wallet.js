@@ -54,6 +54,10 @@ export default class Wallet {
         }
         console.log(this.entryPoints);
         forEach(this.entryPoints, (v) => {
+            console.log(">>>>", v)
+            if(!v.name) {
+                return;
+            }
             if (v.name.includes(name)) {
                 result = v.generateParameter(...parameters);
             }
