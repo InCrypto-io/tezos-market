@@ -87,3 +87,11 @@ code {
   height: 400px;
   justify-content: space-evenly;
 }
+
+.footer {
+  height: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  margin-top: 50px;
+}

@@ -2,6 +2,7 @@ import * as React from "react";
 import Header from "./header";
 import Gallery from "./gallery";
 import BuySell from "./BuySell";
+import Footer from "./footer";
 
 export default class Home extends React.Component {
 
@@ -105,6 +106,8 @@ export default class Home extends React.Component {
                         title={this.state.title}
                         onSelect={this.onSelect}/>
             }
+
+            <Footer></Footer>
 
         </div>
     }
