@@ -2,7 +2,7 @@ import * as React from "react";
 import Wallet from "./Wallet";
 
 const contract = `
-{ parameter (or (or (or address nat) (or nat (pair %placeOrder (pair nat address) mutez))) address) ;
+{ parameter (or (or (or address nat) (or nat (pair (pair nat address) mutez %placeOrder))) address) ;
   storage
     (pair (pair (map nat (pair (pair (pair bool nat) (pair address address)) mutez)) address)
           (pair nat (set address))) ;
@@ -675,7 +675,7 @@ export default class WalletServiceTestMarket extends React.Component {
             {},
             5,
             "KT1BQKdgo8nAaWdjjUt9Hm7JziRqmLfeDzG2",
-                1000
+                5
         ).catch(console.error);
     };
 

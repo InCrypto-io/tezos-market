@@ -1,6 +1,9 @@
 import * as React from "react";
 // import * as eztz from "./eztz.min";
 const eztz = {};
+// require("./eztz.min.js");
+
+// tezbridge.contract()
 
 const contract = `
 { parameter (or (or nat int) (or (pair %mint address nat) (pair %transfer address nat))) ;
