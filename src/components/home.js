@@ -33,6 +33,16 @@ export default class Home extends React.Component {
                     owner: "sfdsd",
                     id: "4",
                 },
+            ],
+            assets: [
+                {
+                    owner: "sfdsd",
+                    id: "8",
+                },
+                {
+                    owner: "dcvs",
+                    id: "10",
+                },
             ]
         }
     }
@@ -71,10 +81,6 @@ export default class Home extends React.Component {
         })
     };
 
-    getTokensForCurrentMode = () => {
-        return this.state.tokens;
-    };
-
     render() {
         return <div className={"page-body"}>
             <Header pageMode={this.state.pageMode} onChangeMode={(id)=>this.onChangeMode(id)}/>
@@ -95,8 +101,7 @@ export default class Home extends React.Component {
                 (this.state.pageMode === "Buy" || this.state.pageMode === "Sell") ?
                     <BuySell elementID={this.state.currentTokenId} mode={this.state.pageMode}/> :
                     <Gallery
-                        // tokens={()=>(this.getTokensForCurrentMode())}
-                        tokens={this.state.tokens}
+                        tokens={this.state.pageMode === "My assets" ? this.state.assets : this.state.tokens}
                         title={this.state.title}
                         onSelect={this.onSelect}/>
             }
