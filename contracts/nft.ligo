@@ -30,6 +30,7 @@ type action is
 | Mint of actionMint
 | Transfer of actionTransfer
 | Burn of actionBurn
+| Dummy of int
 
 // Mints a new NFT by creating a new entry in the contract.
 // @param nftToMintId - ID of the NFT
@@ -78,6 +79,12 @@ function burn(const action : actionBurn ; const s : storageType) : (list(operati
     s.nfts := nfts;
    } with ((nil: list(operation)) , s)
 
+
+function dummy(const action : int; const s: storageType) : (list(operation) * storageType) is
+  block { 
+    skip;
+   } with ((nil: list(operation)) , s)
+
 // @remarks In v004 Athens, Michelson does not support multiple entrypoints. This is solved 
 // in Ligo through variants and pattern matching.
 // @param Any of the action types defined above.
@@ -87,4 +94,5 @@ function main(const action : action; const s : storageType) : (list(operation) *
  | Mint (mt) -> mint (mt, s)
  | Transfer (tx) -> transfer (tx, s)
  | Burn (bn) -> burn (bn, s)
+ | Dummy (dm) -> dummy (dm, s)
 end

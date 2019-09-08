@@ -42,7 +42,7 @@ begin
   else
     skip;
 
-    const order : order = record
+  const order : order = record
     owner      = source;
     buy_sell   = True;
     price      = action.price;
@@ -56,45 +56,23 @@ begin
 
   // Put token on hold (market contract plays role of custodian)  
   const transferParams: actionTransfer = record
-    nftToTransfer = action.asset;
+    nftToTransfer = order.nft_asset;
     destination = s.owner;
-  end;
-  const receiver : contract(actionTransfer) = get_contract(action.issuer);
-  const payoutOperation : operation = transaction(transferParams, 0mtz, receiver);
-  const operations : list(operation) = list payoutOperation end;
-end with (operations, s)
-
-
-type cancelOrderAction is record [
-  asset: nftId;
-];
-
-function cancelOrder(const action : cancelOrderAction; const s : storageType) : (list(operation) * storageType) is 
-begin
-  const order : order = get_force(action.asset, s.orders);
-  if source =/= order.owner then
-    fail("You are not owner of the order")
-  else
-    skip;
-
-  const orders : orders = s.orders;
-  remove action.asset from map orders;
-  s.orders := orders;
-
-  // return from hold to token original owner
-  const transferParams: actionTransfer = record
-    nftToTransfer = action.asset;
-    destination = order.owner;
   end;
   const receiver : contract(actionTransfer) = get_contract(order.nft_issuer);
   const payoutOperation : operation = transaction(transferParams, 0mtz, receiver);
   const operations : list(operation) = list payoutOperation end;
-end with (operations, s)
 
+  // const transferParams: actionTransfer = record
+  //   nftToTransfer = order.nft_asset;
+  //   destination = s.owner;
+  // end;
+  // const receiver : contract(int) = get_contract(order.nft_issuer);
+  // const payoutOperation : operation = transaction(42, 0mtz, receiver);
+  // const operations : list(operation) = list payoutOperation end;
+// end with (operations, s)
+end with ((nil: list(operation)) , s)
 
-type fillOrderAction is record[
-  asset: nftId;
-]
 
 function orders_mem(const key: nftId; const orders : orders) : bool is
 begin
@@ -108,10 +86,47 @@ begin
 end with result
 
 
+type cancelOrderAction is record [
+  asset: nftId;
+];
+
+function cancelOrder(const action : cancelOrderAction; const s : storageType) : (list(operation) * storageType) is 
+begin
+  if not orders_mem(action.asset, s.orders) then
+    fail("Cannot cancel order; order ", action.asset, " not found");
+  else
+    skip;
+
+  const order : order = get_force(action.asset, s.orders);
+  if source =/= order.owner then
+    fail("You are not owner of the order")
+  else
+    skip;
+
+  const orders : orders = s.orders;
+  remove action.asset from map orders;
+  s.orders := orders;
+
+  // return from hold to token original owner
+//   const transferParams: actionTransfer = record
+//     nftToTransfer = action.asset;
+//     destination = order.owner;
+//   end;
+//   const receiver : contract(actionTransfer) = get_contract(order.nft_issuer);
+//   const payoutOperation : operation = transaction(transferParams, 0mtz, receiver);
+//   const operations : list(operation) = list payoutOperation end;
+// end with (operations, s)
+end with ((nil: list(operation)) , s)
+
+
+type fillOrderAction is record[
+  asset: nftId;
+]
+
 function fillOrder(const action : fillOrderAction; const s : storageType) : (list(operation) * storageType) is 
 begin
   if not orders_mem(action.asset, s.orders) then
-    fail("Order ", action.asset, " not found");
+    fail("Cannot execute order; order ", action.asset, " not found");
   else
     skip;
 
@@ -126,14 +141,16 @@ begin
   s.orders := orders;
 
   // sell asset to caller
-  const transferParams: actionTransfer = record
-    nftToTransfer = order.nft_asset;
-    destination = source;
-  end;
-  const receiver : contract(actionTransfer) = get_contract(order.nft_issuer);
-  const payoutOperation : operation = transaction(transferParams, order.price, receiver);
-  const operations : list(operation) = list payoutOperation end;
-end with (operations, s)
+//   const transferParams: actionTransfer = record
+//     nftToTransfer = order.nft_asset;
+//     destination = source;
+//   end;
+//   const receiver : contract(actionTransfer) = get_contract(order.nft_issuer);
+//   const payoutOperation : operation = transaction(transferParams, order.price, receiver);
+//   const operations : list(operation) = list payoutOperation end;
+// end with (operations, s)
+end with ((nil: list(operation)) , s)
+
 
 
 type whitelistIssuerAction is record[
@@ -168,12 +185,19 @@ begin
 end with ((nil: list(operation)) , s)
 
 
+function dummy(const action: int; const s : storageType) : (list(operation) * storageType) is 
+begin
+  skip;
+end with ((nil: list(operation)) , s)
+
+
 type action is
 | WhitelistIssuer of whitelistIssuerAction
 | BlockIssuer of blockIssuerAction
 | PlaceOrder of placeOrderAction
 | CancelOrder of cancelOrderAction
 | FillOrder of fillOrderAction
+| Dummy of int
 
 function main(const action : action; const s : storageType) : (list(operation) * storageType) is 
 begin
@@ -185,4 +209,5 @@ end with
  | PlaceOrder (params)      -> placeOrder (params, s)
  | CancelOrder (params)     -> cancelOrder (params, s)
  | FillOrder (params)       -> fillOrder (params, s)
+ | Dummy (params)           -> dummy (params, s)
 end
