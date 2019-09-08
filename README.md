@@ -1,3 +1,5 @@
+## Tezos Market from BLAIZE for Eastern European Tezos Hackathon
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
