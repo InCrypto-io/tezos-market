@@ -11,9 +11,9 @@ function App() {
     <div className="App">
       <header className="App-header">
           {/* <NFTTest></NFTTest> */}
-           <ServiceTest></ServiceTest>
-           <WalletServiceTest></WalletServiceTest>
-          <WalletServiceTestMarket></WalletServiceTestMarket>
+          {/* <ServiceTest></ServiceTest>*/}
+          {/* <WalletServiceTest></WalletServiceTest>*/}
+          {/*<WalletServiceTestMarket></WalletServiceTestMarket>*/}
           <Home/>
       </header>
     </div>
