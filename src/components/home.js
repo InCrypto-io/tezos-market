@@ -18,29 +18,29 @@ export default class Home extends React.Component {
                 {
                     owner: "sfdsd",
                     id: "0",
-                    name: "asas"
+                    name: "Sword"
                 },
                 {
                     owner: "dcvs",
                     id: "1",
-                    name: "sdfsdf"
+                    name: "Rifle"
                 },
             ],
             assets: [
                 {
                     owner: "sfdsd",
                     id: "0",
-                    name: "sdfdsf"
+                    name: "Sword"
                 },
                 {
                     owner: "dcvs",
                     id: "1",
-                    name: "sdfdsf"
+                    name: "Rifle"
                 },
                 {
                     owner: "dcvs",
                     id: "2",
-                    name: "sdfdsf"
+                    name: "Revos"
                 },
             ]
         }
