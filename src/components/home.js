@@ -79,6 +79,7 @@ export default class Home extends React.Component {
     onChangeMode = (mode) => {
         this.setState({
             pageMode: mode,
+            title: mode
         })
     };
 
