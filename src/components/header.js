@@ -17,7 +17,7 @@ export default class Header extends React.Component {
         const {pages} = this.state;
         const {pageMode} = this.props;
         return <div className={"header"}>
-            <img src={require("../logo.png")} width={285} height={100} alt=""/>
+            <img src={require("../logo.jpeg")} width={285} height={100} alt=""/>
             <div className={"header-links"}>
                 {
                     pages.map(page => {

@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "conseiljs": "0.2.9",
+    "eztz": "^1.1.2",
     "lodash": "^4.17.15",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
