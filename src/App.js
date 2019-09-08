@@ -3,6 +3,7 @@ import './App.css';
 import WalletServiceTest from "./WalletServiceTest";
 import NFTTest from "./NFTTest";
 import Home from "./components/home"
+import WalletServiceTestMarket from "./WalletServiceTestMarket";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <header className="App-header">
           {/* <NFTTest></NFTTest> */}
            <WalletServiceTest></WalletServiceTest>
+          <WalletServiceTestMarket></WalletServiceTestMarket>
           <Home/>
       </header>
     </div>
