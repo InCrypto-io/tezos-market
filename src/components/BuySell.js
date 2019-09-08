@@ -2,6 +2,7 @@ import * as React from "react";
 
 import Wallet from "../Wallet";
 
+
 const contract = `
 { parameter (or (or nat int) (or (pair %mint address nat) (pair %transfer address nat))) ;
   storage (pair address (map nat address)) ;
