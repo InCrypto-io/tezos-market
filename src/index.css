@@ -116,7 +116,13 @@ code {
   height: 100px;
   display: flex;
   flex-direction: row;
-  justify-content: start;
+  justify-content: space-between;
   margin-top: 70px;
   width: 100vw;
+}
+
+.link {
+  align-self: start;
+  color: black;
+  margin-right: 50px;
 }
