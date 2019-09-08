@@ -49,7 +49,7 @@ code {
   width: 100px;
   height: 100px;
   margin: 30px;
-  border: cadetblue solid;
+  border: cadetblue solid 1px;
   padding: 10px;
 }
 

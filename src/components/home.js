@@ -12,45 +12,53 @@ export default class Home extends React.Component {
             user: "sfdsd",
             pageMode: "my_assets",
             currentTokenId: "0",
+            currentElName: "0asdsad",
             title: "Top rated",
             tokens: [
                 {
                     owner: "sfdsd",
                     id: "0",
+                    name: "asas"
                 },
                 {
                     owner: "dcvs",
                     id: "1",
+                    name: "sdfsdf"
                 },
             ],
             assets: [
                 {
                     owner: "sfdsd",
                     id: "0",
+                    name: "sdfdsf"
                 },
                 {
                     owner: "dcvs",
                     id: "1",
+                    name: "sdfdsf"
                 },
                 {
                     owner: "dcvs",
                     id: "2",
+                    name: "sdfdsf"
                 },
             ]
         }
     }
 
-    goToBuy(id) {
+    goToBuy(id, name) {
         this.setState({
             pageMode: "Buy",
-            currentTokenId: id
+            currentTokenId: id,
+            currentElName: name,
         })
     }
 
-    goToSell(id) {
+    goToSell(id, name) {
         this.setState({
             pageMode: "Sell",
-            currentTokenId: id
+            currentTokenId: id,
+            currentElName: name,
         })
     }
 
@@ -60,11 +68,12 @@ export default class Home extends React.Component {
         })
     }
 
-    onSelect = (id) => {
+    onSelect = (id, name) => {
         console.log(id)
         this.setState({
             pageMode: id % 2 === 0 ? "Buy" : "Sell",
-            currentTokenId: id
+            currentTokenId: id,
+            currentElName: name,
         })
     };
 
@@ -101,6 +110,7 @@ export default class Home extends React.Component {
             {
                 (this.state.pageMode === "Buy" || this.state.pageMode === "Sell") ?
                     <BuySell elementID={this.state.currentTokenId} mode={this.state.pageMode}
+                             name={this.state.currentElName}
                              goToHome={this.goToHome}/> :
                     <Gallery
                         tokens={this.state.pageMode === "My assets" ? this.state.assets : this.state.tokens}
